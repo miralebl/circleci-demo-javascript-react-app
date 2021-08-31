@@ -16,6 +16,16 @@ jobs:
         - run: docker run --mount source=datastore,destination=/mnt/volume debian:bullseye-slim dd if=/dev/zero of=/mnt/volume/zero bs=32M count=32
         - run: docker volume ls
         - run: echo hello Miranda
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run:
+          command: >
+            echo "The command above installs Heroku, the command below deploys.
+            What you do inbetween is up to you!"
+      - heroku/deploy-via-git
 
 workflows:
   app-tests:
@@ -24,7 +34,7 @@ workflows:
   heroku_deploy:
     jobs:
       - build
-      - heroku/deploy-via-git:
+      - deploy:
           requires:
             - build # only run deploy-via-git job if the build job has completed
           filters:
