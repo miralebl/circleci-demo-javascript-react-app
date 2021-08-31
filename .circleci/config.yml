@@ -2,7 +2,7 @@ orbs:
   node: circleci/node@4.2.1
   heroku: circleci/heroku@1.2.6 # Use the Heroku orb in your config
 
-# version: 2.1
+version: 2.1
 
 jobs:
   build:
@@ -27,12 +27,7 @@ workflows:
   app-tests:
     jobs:
       - build
-  heroku_deploy:
+  deploy:
     jobs:
       - build
       - deploy
-          # requires:
-          #   - build # only run deploy-via-git job if the build job has completed
-          # filters:
-          #   branches:
-          #     only: master # only run deploy-via-git job on master branch
