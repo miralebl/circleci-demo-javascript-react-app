@@ -1,5 +1,5 @@
 orbs:
-  node: circleci/node@4.2.1
+  node: circleci/node@4.7.0
   heroku: circleci/heroku@1.2.6 # Use the Heroku orb in your config
 
 version: 2.1
@@ -16,8 +16,6 @@ jobs:
         - run: docker run --mount source=datastore,destination=/mnt/volume debian:bullseye-slim dd if=/dev/zero of=/mnt/volume/zero bs=32M count=32
         - run: docker volume ls
         - run: echo hello Miranda
-        - store_test_results:
-            path: test-results
   deploy:
     executor: heroku/default
     steps:
@@ -28,7 +26,7 @@ jobs:
 workflows:
   app-tests:
     jobs:
-      - build
+      - node/test
   deploy:
     jobs:
       - build
